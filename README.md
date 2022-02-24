@@ -8,6 +8,8 @@ First, run the development server:
 npm run dev
 # or
 yarn dev
+
+npx create-next-app (name)
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -17,6 +19,38 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 [API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+
+```shell
+npm i 
+	ethers 
+	hardhat                         # 编译部署合约，类似truffle
+	@nomiclabs/hardhat-waffle       # waffle插件
+	ethereum-waffle 				# waffle框架
+	chai                            # 断言库
+	@nomiclabs/hardhat-ethers 		# waffle插件	
+	web3modal 
+	@openzeppelin/contracts 
+	ipfs-http-client 
+	axios
+	
+	
+npm i add -D 
+	tailwindcss@latest 
+	postcss@latest 
+	autoprefixer@latest
+	
+npx tailwindcss init -p 			# 创建tailwindcss配置文件
+```
+
+
+
+### Hardhat
+
+```shell
+npx hardhat							# 初始化waffle框架
+```
+
+
 
 ## Learn More
 
@@ -32,3 +66,20 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+# Basic Sample Hardhat Project
+
+This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+
+Try running some of the following tasks:
+
+```shell
+npx hardhat accounts
+npx hardhat compile
+npx hardhat clean
+npx hardhat test
+npx hardhat node
+node scripts/sample-script.js
+npx hardhat run scripts/deploy.js --network localhost
+npx hardhat help
+```
