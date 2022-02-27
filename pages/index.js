@@ -15,6 +15,7 @@ export default function Home() {
     loadNFTs()
   }, [])
 
+  // 加载可购NFT
   async function loadNFTs() {
     const provider = new ethers.providers.JsonRpcProvider()
     const NFTContract = new ethers.Contract(nftAddress, NFT.abi, provider)
@@ -23,6 +24,7 @@ export default function Home() {
 
     let items = await Promise.all(data.map(async i => {
       const tokenUri = await NFTContract.tokenURI(i.tokenId)
+      // 使用ajax获取NFT图片，名称，描述信息
       const meta = await axios.get(tokenUri)
       const price = ethers.utils.formatUnits(i.price.toString(), 'ether')
       let item = {

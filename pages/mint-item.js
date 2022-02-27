@@ -9,7 +9,8 @@ import KBMarket from '../artifacts/contracts/KBMarket.sol/KBMarket.json'
 import { useRouter } from 'next/router'
 
 // 使用ipfs托管nft里存储的数据
-const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
+const client = ipfsHttpClient('http://127.0.0.1:5001/api/v0')
+//const client = ipfsHttpClient('http://127.0.0.1/tcp/8080')
 
 export default function MintItem() {
     const [fileUrl, setFileUrl] = useState(null)
@@ -25,6 +26,7 @@ export default function MintItem() {
         const file = e.target.files[0]
         try {
             //往ipfs里添加元素
+            console.log(client)
             const added = await client.add(
                 file,
                 {
@@ -33,8 +35,8 @@ export default function MintItem() {
                     }
                 }
             )
-            storeData()
-            const url = `https://ipfs.infura.io/ipfs/${added.path}`
+            console.log(added)
+            const url = `http://localhost:8080/ipfs/${added.path}`
             setFileUrl(url)
         } catch (error) {
             console.log('Upload file error:', error)
@@ -51,8 +53,9 @@ export default function MintItem() {
             image: fileUrl
         })
         try {
+            // ipfs二次存储,为整合图片后的其他信息
             const added = await client.add(data)
-            const url = `https://ipfs.infura.io/ipfs/${added.path}`
+            const url = `http://localhost:8080/ipfs/${added.path}`
             createItem(url)
         } catch (error) {
             console.log('Upload file error:', error)

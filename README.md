@@ -4,7 +4,12 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 First, run the development server:
 
+可能需要重新部署合约
+
 ```bash
+npx hardhat node
+npx hardhat run scripts/deploy.js --network localhost
+
 npm run dev
 # or
 yarn dev
@@ -19,6 +24,8 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 [API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+
+部分依赖包解释
 
 ```shell
 npm i 

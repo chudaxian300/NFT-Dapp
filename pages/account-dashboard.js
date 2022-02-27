@@ -41,7 +41,8 @@ export default function AccountDashBoard() {
             return item
         }))
         const soldItem = setSold(items.filter(i => i.sold))
-        setNFts(soldItem)
+        setSold(soldItem)
+        setNFts(items)
         setLoadingState('loaded')
     }
 

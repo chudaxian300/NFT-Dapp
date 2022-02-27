@@ -16,7 +16,6 @@ module.exports = {
   defaultNetwork: 'hardhat',
   networks: {
     hardhat: {
-      chainId: 1337
     },
     mumbai:{
       url: `https://mainnet.infura.io/v3/${projectId}`,
