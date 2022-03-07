@@ -32,21 +32,44 @@ describe("KBMarket", function () {
 
     await market.connect(buyer).createMarketSale(1, nftAddress, { value: auctionPrice })
 
-    let items = await market.getUnsoldToken()
+    let item = await market.getUnsoldToken()
 
-    items = await Promise.all(items.map(async i => {
+    itemsList = await Promise.all(item.map(async i => {
       // tokenURI: ERC721URIStorage内部方法根据token的id查询uri
       const tokenUri = await nft.tokenURI(i.tokenId)
-      let item = {
+      let items = {
         price: i.price.toString(),
         tokenId: i.tokenId.toString(),
         seller: i.seller,
         owner: i.owner,
+        creater: i.creater,
         tokenUri
       }
-      return item;
+      return items;
     }))
 
-    console.log('item', items)
+    console.log('item', itemsList)
+
+    // 测试转卖物品
+    await nft.connect(buyer).setApprovalForAll(marketAddress, true)
+    await market.connect(buyer).resellMarketItem(1, auctionPrice, nftAddress, { value: listingPrice })
+
+    item = await market.getUnsoldToken()
+
+    itemsList = await Promise.all(item.map(async i => {
+      // tokenURI: ERC721URIStorage内部方法根据token的id查询uri
+      const tokenUri = await nft.tokenURI(i.tokenId)
+      let items = {
+        price: i.price.toString(),
+        tokenId: i.tokenId.toString(),
+        seller: i.seller,
+        owner: i.owner,
+        creater: i.creater,
+        tokenUri
+      }
+      return items;
+    }))
+
+    console.log('item', itemsList)
   })
 });

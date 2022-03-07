@@ -30,6 +30,7 @@ contract KBMarket is ReentrancyGuard {
         address nftAddress;
         address payable owner;
         address payable seller;
+        address creater;
         bool sold;
     }
 
@@ -42,6 +43,7 @@ contract KBMarket is ReentrancyGuard {
         address indexed nftAddress,
         address owner,
         address seller,
+        address creater,
         bool sold
     );
 
@@ -65,6 +67,7 @@ contract KBMarket is ReentrancyGuard {
             nftAddress,
             payable(address(0)),
             payable(msg.sender),
+            msg.sender,
             false
         );
         // 授权市场托管NFT
@@ -79,8 +82,28 @@ contract KBMarket is ReentrancyGuard {
             nftAddress,
             payable(address(0)),
             payable(msg.sender),
+            msg.sender,
             false
         );
+    }
+
+    // 转卖物品
+    function resellMarketItem(
+        uint256 tokenId,
+        uint256 price,
+        address nftAddress
+    ) public payable nonReentrant {
+        require(price > 0, "Price must be at least one wei");
+        require(
+            msg.value == listingPrice,
+            "Send value must be equal to listing price"
+        );
+        idToTokenItem[tokenId].owner = payable(address(0));
+        idToTokenItem[tokenId].seller = payable(msg.sender);
+        idToTokenItem[tokenId].sold = false;
+
+        IERC721(nftAddress).transferFrom(msg.sender, address(this), tokenId);
+        _tokenSold.decrement();
     }
 
     // 交易物品
@@ -111,7 +134,7 @@ contract KBMarket is ReentrancyGuard {
 
         MarketItem[] memory items = new MarketItem[](unsoldItemCount);
         for(uint i = 0; i < itemCount; i++) {
-            if(idToTokenItem[i + 1].owner == address(0)) {
+            if(!idToTokenItem[i + 1].sold) {
                 uint currentId = i + 1;
                 MarketItem storage currentItem = idToTokenItem[currentId];
                 items[currentIndex] = currentItem; 
@@ -151,13 +174,13 @@ contract KBMarket is ReentrancyGuard {
         uint256 currentIndex = 0;
 
         for (uint256 i = 0; i < itemCount; i++) {
-            if (idToTokenItem[i + 1].seller == msg.sender) {
+            if (idToTokenItem[i + 1].creater == msg.sender) {
                 myCount++;
             }
         }
         MarketItem[] memory items = new MarketItem[](myCount);
         for (uint256 i = 0; i < itemCount; i++) {
-            if (idToTokenItem[i + 1].seller == msg.sender) {
+            if (idToTokenItem[i + 1].creater == msg.sender) {
                 uint256 currentId = idToTokenItem[i + 1].itemId;
                 MarketItem storage currentItem = idToTokenItem[currentId];
                 items[currentIndex] = currentItem;

@@ -43,6 +43,28 @@ export default function MyNft() {
     setLoadingState('loaded')
   }
 
+  async function sellMyNFT(nft) {
+    const web3Modal = new Web3Modal()
+    const connect = await web3Modal.connect()
+    const provider = new ethers.providers.Web3Provider(connect)
+    // signer: 当前用户
+    const signer = provider.getSigner()
+    const NFTContract = new ethers.Contract(nftAddress, NFT.abi, signer)
+    const MarketContract = new ethers.Contract(nftMarketAddress, KBMarket.abi, signer)
+
+    let listingPrice = await MarketContract.listingPrice()
+    listingPrice = listingPrice.toString()
+    const price = ethers.utils.parseUnits(nft.price, 'ether')
+
+    await NFTContract.setApprovalForAll(nftMarketAddress, true)
+
+    const transaction = await MarketContract.resellMarketItem(nft.tokenId, price, nftAddress, {
+      value: listingPrice
+    })
+    await transaction.wait()
+    loadNFTs()
+  }
+
   if (loadingState === 'loaded' && !nfts.length) return (
     <h1 className='px-20 py-7 text-4x1'>You do not own any NFTs currently :(</h1>
   )
@@ -64,6 +86,9 @@ export default function MyNft() {
                 </div>
                 <div className='p-4 bg-black'>
                   <p className='text-3x-1 mb-4 font-bold text-white'>{nft.price} ETH</p>
+                  <button className='w-full bg-purple-500 text-white font-bold py-3 px-12 rounded'
+                    onClick={() => sellMyNFT(nft)} >Sell
+                  </button>
                 </div>
               </div>
             ))
