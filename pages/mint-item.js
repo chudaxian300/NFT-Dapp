@@ -94,17 +94,17 @@ export default function MintItem() {
         <div className='flex justify-center'>
             <div className='w-1/2 flex flex-col pb-12'>
                 <input
-                    placeholder='Asset Name'
+                    placeholder='输入名称'
                     className='mt-8 border rounded p-4'
                     onChange={e => setFormInput({ ...formInput, name: e.target.value })}
                 />
                 <textarea
-                    placeholder='Asset Description'
+                    placeholder='输入描述'
                     className='mt-2 border rounded p-4'
                     onChange={e => setFormInput({ ...formInput, description: e.target.value })}
                 />
                 <input
-                    placeholder='Asset Price in Eth'
+                    placeholder='输入价格(单位:ETH)'
                     className='mt-2 border rounded p-4'
                     onChange={e => setFormInput({ ...formInput, price: e.target.value })}
                 />
@@ -118,9 +118,9 @@ export default function MintItem() {
                         <img className='rounded mt-4' width='350px' src={fileUrl} />
                     )}
                 <button onClick={createItemInfo}
-                    className='font-bold mt-4 bg-purple-500 text-white rounded p-4 shadow-lg'
+                    className='font-bold mt-4 bg-blue-500 text-white rounded p-4 shadow-lg'
                 >
-                    Mint NFT
+                    铸造 NFT
                 </button>
             </div>
         </div>

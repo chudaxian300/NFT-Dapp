@@ -47,12 +47,12 @@ export default function AccountDashBoard() {
     }
 
     if (loadingState === 'loaded' && !nfts.length) return (
-        <h1 className='px-20 py-7 text-4x1'>You have not minted any NFTs!</h1>
+        <h1 className='px-20 py-7 text-4x1'>你没有铸造任何NFT</h1>
     )
 
     return (
         <div className='flex justify-center p-4'>
-            <h1 style={{ fontSize: '20px', color: 'purple' }}>Tokens Minted</h1>
+            <h1 style={{ fontSize: '20px', color: 'purple' }}>已铸造的NFT</h1>
             <div className='px-4' style={{ maxWidth: '1600px' }}>
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4'>
                     {

@@ -1,93 +1,91 @@
-import { ethers } from 'ethers'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import Web3Modal from 'web3modal'
-import { nftMarketAddress, nftAddress } from '../config'
-
-import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
-import KBMarket from '../artifacts/contracts/KBMarket.sol/KBMarket.json'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import Link from 'next/link'
 
 export default function Home() {
-  const [nfts, setNFts] = useState([])
-  const [loadingState, setLoadingState] = useState('not-loaded')
-
-  useEffect(() => {
-    loadNFTs()
-  }, [])
-
-  // 加载可购NFT
-  async function loadNFTs() {
-    const provider = new ethers.providers.JsonRpcProvider()
-    const NFTContract = new ethers.Contract(nftAddress, NFT.abi, provider)
-    const MarketContract = new ethers.Contract(nftMarketAddress, KBMarket.abi, provider)
-    const data = await MarketContract.getUnsoldToken()
-
-    let items = await Promise.all(data.map(async i => {
-      const tokenUri = await NFTContract.tokenURI(i.tokenId)
-      // 使用ajax获取NFT图片，名称，描述信息
-      const meta = await axios.get(tokenUri)
-      const price = ethers.utils.formatUnits(i.price.toString(), 'ether')
-      let item = {
-        price: price,
-        tokenId: i.tokenId.toNumber(),
-        seller: i.seller,
-        owner: i.owner,
-        image: meta.data.image,
-        name: meta.data.name,
-        description: meta.data.description
-      }
-      return item
-    }))
-    setNFts(items)
-    setLoadingState('loaded')
-  }
-
-  // 购买方法
-  async function buyNFT(nft) {
-    const web3Modal = new Web3Modal()
-    const connect = await web3Modal.connect()
-    const provider = new ethers.providers.Web3Provider(connect)
-    // signer: 当前用户
-    const signer = provider.getSigner()
-    const MarketContract = new ethers.Contract(nftMarketAddress, KBMarket.abi, signer)
-    const price = ethers.utils.parseUnits(nft.price, 'ether')
-    const transaction = await MarketContract.createMarketSale(nft.tokenId, nftAddress, {
-      value: price
-    })
-    await transaction.wait()
-    loadNFTs()
-  }
-
-  if (loadingState === 'loaded' && !nfts.length) return (
-    <h1 className='px-20 py-7 text-4x1'>No NFts in marketplace</h1>
-  )
-
-  return (
-    <div className='flex justify-center'>
-      <div className='px-4' style={{ maxWidth: '1600px' }}>
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4'>
-          {
-            // 循环现有nft并在页面展示
-            nfts.map((nft, i) => (
-              <div key={i} className='border shadow rounded-x1 overflow-hidden'>
-                <img src={nft.image} />
-                <div className='p-4'>
-                  <p style={{ height: '64px' }} className='text-3x1 font-semibold'>{nft.name}</p>
-                  <div style={{ height: '72px', overflow: 'hidden' }}>
-                    <p className='text-gray-400'>{nft.description}</p>
-                  </div>
+    return (
+        <div>
+            <div className='wrapper'>
+                <div className='index-title'>
+                    <h1>NFT</h1>
+                    <h2>让价值自由流通</h2>
+                    <div>
+                        <button>
+                            <Link href='/mint-item'>
+                                <span style={{ color: '#ffffff' }}>发布数字藏品</span>
+                            </Link>
+                        </button>
+                        <button>
+                            <Link href='/market'>
+                                <span style={{ color: '#ffffff' }}>浏览商品</span>
+                            </Link>
+                        </button>
+                    </div>
                 </div>
-                <div className='p-4 bg-black'>
-                  <p className='text-3x-1 mb-4 font-bold text-white'>{nft.price} ETH</p>
-                  <button className='w-full bg-purple-500 text-white font-bold py-3 px-12 rounded'
-                    onClick={() => buyNFT(nft)} >Buy
-                  </button>
+                {/* <Swiper
+                    spaceBetween={50}
+                    slidesPerView={1}
+                    onSlideChange={() => console.log('slide change')}
+                    onSwiper={(swiper) => console.log(swiper)}
+                >
+                    <SwiperSlide> */}
+                <video autoplay={'autoplay'} loop={'loop'} muted={"muted"} className='swiper-video'>
+                    <source src={`/video/a.mp4`} type="video/mp4"></source>
+                </video>
+                {/* </SwiperSlide>
+                    <SwiperSlide> */}
+                {/* <video autoplay={'autoplay'} loop={'loop'} muted={"muted"} className='swiper-video'>
+                            <source src={`/video/b.mp4`} type="video/mp4"></source>
+                        </video> */}
+                {/* </SwiperSlide>
+                </Swiper> */}
+
+            </div>
+            <div className='index-main'>
+                <h3>优势</h3>
+                <div className='advantage'>
+                    <div className='advantage-info'>
+                        <div>
+                            <img data-v-f2fc9792="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAlCAMAAAAZd2syAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABIUExURUdwTCIoNB0gKwDQ6B0gKx0gKyAgKx4gLB0hLR0gK////+jp6pWWnBvV6lHf7/L8/rPx+AemuxVVZcr1+prs9oLo9OL6/A58jgo8f1oAAAAKdFJOUwAW//94k0eyPOaTU8lhAAAA+klEQVQ4y7WUWRKEIAxEtdHBjcX9/jcdJagFKjAf01UKhEcgKUiWxVVwaite17y6z5O9BHJDw6i4eYHVx6wBurbtAM/faaf1HF2zqQN3Mc9eo92HLW6y9voX7HQ+MEeDu+l51N7Fei80G/jKPK1eoioODD27qR8AJ+0ATUjVkCSNASdHFhNKCiOpRACb9LGfnt4xYX1c3UdMz9fxZ/2KLfLC5PKKSXVytvscwhHgHnIgUjYvhhPLHMrblpJx/48TC2NMa/oi2OaJPEYwMY4iAXPkYGkXKe1aJl7yxCfzp3caLg7RUkP2EuHCVRxUESyDppvbKhetrFUC9AWSYxO6ow/KmAAAAABJRU5ErkJggg=="></img>
+                        </div>
+                        <div>
+                            <h5>藏品众多</h5>
+                            <br></br>
+                            <p>拥有独家数字藏品，众多前卫创作者，藏品分类涵盖范围广。</p>
+                        </div>
+                    </div>
+                    <div className='advantage-info'>
+                        <div>
+                            <img data-v-f2fc9792="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAlCAMAAAAZd2syAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABIUExURUdwTCIoNB0gKwDQ6B0gKx0gKyAgKx4gLB0hLR0gK////+jp6pWWnBvV6lHf7/L8/rPx+AemuxVVZcr1+prs9oLo9OL6/A58jgo8f1oAAAAKdFJOUwAW//94k0eyPOaTU8lhAAAA+klEQVQ4y7WUWRKEIAxEtdHBjcX9/jcdJagFKjAf01UKhEcgKUiWxVVwaite17y6z5O9BHJDw6i4eYHVx6wBurbtAM/faaf1HF2zqQN3Mc9eo92HLW6y9voX7HQ+MEeDu+l51N7Fei80G/jKPK1eoioODD27qR8AJ+0ATUjVkCSNASdHFhNKCiOpRACb9LGfnt4xYX1c3UdMz9fxZ/2KLfLC5PKKSXVytvscwhHgHnIgUjYvhhPLHMrblpJx/48TC2NMa/oi2OaJPEYwMY4iAXPkYGkXKe1aJl7yxCfzp3caLg7RUkP2EuHCVRxUESyDppvbKhetrFUC9AWSYxO6ow/KmAAAAABJRU5ErkJggg=="></img>
+                        </div>
+                        <div>
+                            <h5>藏品众多</h5>
+                            <br></br>
+                            <p>拥有独家数字藏品，众多前卫创作者，藏品分类涵盖范围广。</p>
+                        </div>
+                    </div>
+                    <div className='advantage-info'>
+                        <div>
+                            <img data-v-f2fc9792="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAlCAMAAAAZd2syAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABIUExURUdwTCIoNB0gKwDQ6B0gKx0gKyAgKx4gLB0hLR0gK////+jp6pWWnBvV6lHf7/L8/rPx+AemuxVVZcr1+prs9oLo9OL6/A58jgo8f1oAAAAKdFJOUwAW//94k0eyPOaTU8lhAAAA+klEQVQ4y7WUWRKEIAxEtdHBjcX9/jcdJagFKjAf01UKhEcgKUiWxVVwaite17y6z5O9BHJDw6i4eYHVx6wBurbtAM/faaf1HF2zqQN3Mc9eo92HLW6y9voX7HQ+MEeDu+l51N7Fei80G/jKPK1eoioODD27qR8AJ+0ATUjVkCSNASdHFhNKCiOpRACb9LGfnt4xYX1c3UdMz9fxZ/2KLfLC5PKKSXVytvscwhHgHnIgUjYvhhPLHMrblpJx/48TC2NMa/oi2OaJPEYwMY4iAXPkYGkXKe1aJl7yxCfzp3caLg7RUkP2EuHCVRxUESyDppvbKhetrFUC9AWSYxO6ow/KmAAAAABJRU5ErkJggg=="></img>
+                        </div>
+                        <div>
+                            <h5>藏品众多</h5>
+                            <br></br>
+                            <p>拥有独家数字藏品，众多前卫创作者，藏品分类涵盖范围广。</p>
+                        </div>
+                    </div>
+                    <div className='advantage-info'>
+                        <div>
+                            <img data-v-f2fc9792="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAlCAMAAAAZd2syAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABIUExURUdwTCIoNB0gKwDQ6B0gKx0gKyAgKx4gLB0hLR0gK////+jp6pWWnBvV6lHf7/L8/rPx+AemuxVVZcr1+prs9oLo9OL6/A58jgo8f1oAAAAKdFJOUwAW//94k0eyPOaTU8lhAAAA+klEQVQ4y7WUWRKEIAxEtdHBjcX9/jcdJagFKjAf01UKhEcgKUiWxVVwaite17y6z5O9BHJDw6i4eYHVx6wBurbtAM/faaf1HF2zqQN3Mc9eo92HLW6y9voX7HQ+MEeDu+l51N7Fei80G/jKPK1eoioODD27qR8AJ+0ATUjVkCSNASdHFhNKCiOpRACb9LGfnt4xYX1c3UdMz9fxZ/2KLfLC5PKKSXVytvscwhHgHnIgUjYvhhPLHMrblpJx/48TC2NMa/oi2OaJPEYwMY4iAXPkYGkXKe1aJl7yxCfzp3caLg7RUkP2EuHCVRxUESyDppvbKhetrFUC9AWSYxO6ow/KmAAAAABJRU5ErkJggg=="></img>
+                        </div>
+                        <div>
+                            <h5>藏品众多</h5>
+                            <br></br>
+                            <p>拥有独家数字藏品，众多前卫创作者，藏品分类涵盖范围广。</p>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            ))
-          }
+            </div>
         </div>
-      </div>
-    </div>
-  )
+    )
 }

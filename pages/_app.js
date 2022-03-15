@@ -1,34 +1,52 @@
-import '../styles/globals.css'
 import '../styles/app.css'
+import '../styles/global.css'
 import Link from 'next/link'
+import Head from 'next/head'
 
-function MarketPlace({Component, pageProps}) {
+function MarketPlace({ Component, pageProps }) {
   return (
     <div>
-      <nav className='border-b p-6' style={{backgroundColor:'purple'}}>
-        <p className='text-4x1 font-bold text-white'>KryptoBird Marketplace</p>
-        <div className='flex mt-4 justify-center'>
-          <Link href='/'>
-            <a className='mr-4'>
-              Main Marketplace
-            </a>
-          </Link>
-          <Link href='/mint-item'>
-            <a className='mr-6'>
-              Mint Tokens
-            </a>
-          </Link>
-          <Link href='/my-nfts'>
-            <a className='mr-6'>
-              My NFts
-            </a>
-          </Link>
-          <Link href='/account-dashboard'>
-            <a className='mr-6'>
-              Account Dashboard
-            </a>
-          </Link>
+      <Head>
+        <title>exchange</title>
+        <link rel="shortcut icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAoCAMAAABDwLOoAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABIUExURQFK/QJJ/QFK/QNJ/wJJ/AJJ/QJJ/kdwTAFK/QBH/wFK/QNJ/QJJ/QFJ/QJJ/wBK/wFK/QJJ/wFJ/gJJ/gBM/wRJ/AJK/gJK/QmUllwAAAAXdFJOU3+htyv75osAvwvVSPLKeB2wa5RhBDhTvPme5QAAAZxJREFUOMudlNu2gyAMRAGFIoK3qvn/Pz0TLkVr7eo69KHabkLCTCIeb6tX/ftP4vzaKCJSzRemMy3Fj+lumHXW5MVMBt96Xj8xvSOS4+NJJsZz/YUZJ6Kw4YGZlNc0nhjeqJ/xMTExbEkrMk9d05wzg/R83gdmCzVuJzy1S8bHpY3ni1FSzW9HQNeSL1U1lusQtta54RdnhHHnXRbMliNL5C0FL6lxer7sLjLxZR08eSXKUr5UUZkNiQQj6jIBUfcTI4j0EQGE8+SJGVhJe0AsqrswakJCMhMSz8N+ZYTBXr2AWJAc1O0/MPgTGoUlpNu9YdLNFHXvGCECTVmue2aiYql7Rv3EDP9nmpBu5sjA4QeG3UxF08ywIX3V1ETNWaCJhaI5G3I5eAOu43PYfvAYM2xRNPR6YFxREpfsAglY3e21M230vC56Q3tefljriIDnU++4bDA+kDVPVi69U3rQJofmjs4j4tWDuZdRlXp19LWX80w4DB5+fZsJZbbY8RX2w2yJ44BnVBfTu5lRZcTM4cusQyk/zMyb2fsHoz8xnKe5hdAAAAAASUVORK5CYII="></link>
+      </Head>
+      <nav style={{ backgroundColor: '#fffff' }}>
+        <div className='nav'>
+          <div className='nav-tar'>
+            <img data-v-44df0c74 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAoCAMAAABDwLOoAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAABIUExURQFK/QJJ/QFK/QNJ/wJJ/AJJ/QJJ/kdwTAFK/QBH/wFK/QNJ/QJJ/QFJ/QJJ/wBK/wFK/QJJ/wFJ/gJJ/gBM/wRJ/AJK/gJK/QmUllwAAAAXdFJOU3+htyv75osAvwvVSPLKeB2wa5RhBDhTvPme5QAAAZxJREFUOMudlNu2gyAMRAGFIoK3qvn/Pz0TLkVr7eo69KHabkLCTCIeb6tX/ftP4vzaKCJSzRemMy3Fj+lumHXW5MVMBt96Xj8xvSOS4+NJJsZz/YUZJ6Kw4YGZlNc0nhjeqJ/xMTExbEkrMk9d05wzg/R83gdmCzVuJzy1S8bHpY3ni1FSzW9HQNeSL1U1lusQtta54RdnhHHnXRbMliNL5C0FL6lxer7sLjLxZR08eSXKUr5UUZkNiQQj6jIBUfcTI4j0EQGE8+SJGVhJe0AsqrswakJCMhMSz8N+ZYTBXr2AWJAc1O0/MPgTGoUlpNu9YdLNFHXvGCECTVmue2aiYql7Rv3EDP9nmpBu5sjA4QeG3UxF08ywIX3V1ETNWaCJhaI5G3I5eAOu43PYfvAYM2xRNPR6YFxREpfsAglY3e21M230vC56Q3tefljriIDnU++4bDA+kDVPVi69U3rQJofmjs4j4tWDuZdRlXp19LWX80w4DB5+fZsJZbbY8RX2w2yJ44BnVBfTu5lRZcTM4cusQyk/zMyb2fsHoz8xnKe5hdAAAAAASUVORK5CYII=" alt=""></img>
+            <Link href='/'>
+              <h1><a className='nav-a h1'>Exchange</a></h1>
+            </Link>
           </div>
+          <div>
+            <Link href='/market'>
+              <a className='nav-a'>
+                市场
+              </a>
+            </Link>
+          </div>
+          <div>
+            <Link href='/mint-item'>
+              <a className='nav-a'>
+                铸造NFT
+              </a>
+            </Link>
+          </div>
+          <div>
+            <Link href='/my-nfts'>
+              <a className='nav-a'>
+                我的NFT
+              </a>
+            </Link>
+          </div>
+          <div>
+            <Link href='/account-dashboard'>
+              <a className='nav-a'>
+                我铸造的NFT
+              </a>
+            </Link>
+          </div>
+        </div>
       </nav>
       <Component {...pageProps} />
     </div>

@@ -7,6 +7,7 @@ import { nftMarketAddress, nftAddress } from '../config'
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import KBMarket from '../artifacts/contracts/KBMarket.sol/KBMarket.json'
 
+
 export default function MyNft() {
   const [nfts, setNFts] = useState([])
   const [loadingState, setLoadingState] = useState('not-loaded')
@@ -66,7 +67,7 @@ export default function MyNft() {
   }
 
   if (loadingState === 'loaded' && !nfts.length) return (
-    <h1 className='px-20 py-7 text-4x1'>You do not own any NFTs currently :(</h1>
+    <h1 className='px-20 py-7 text-4x1'>你目前没有任何NFT</h1>
   )
 
   return (
@@ -87,7 +88,7 @@ export default function MyNft() {
                 <div className='p-4 bg-black'>
                   <p className='text-3x-1 mb-4 font-bold text-white'>{nft.price} ETH</p>
                   <button className='w-full bg-purple-500 text-white font-bold py-3 px-12 rounded'
-                    onClick={() => sellMyNFT(nft)} >Sell
+                    onClick={() => sellMyNFT(nft)} >出售
                   </button>
                 </div>
               </div>
