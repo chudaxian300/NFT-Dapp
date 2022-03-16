@@ -55,10 +55,17 @@ a:active {
 }
 
 .swiper-video {
-  display: inline-block; 
+  /* display: inline-block; 
   width: 100%; 
   max-width: 100%; 
+  height: auto; */
+  width: auto;
   height: auto;
+  visibility: visible;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .index-title {
@@ -106,6 +113,11 @@ a:active {
   align-items: center;
 }
 
+.index-title div button:hover {
+  background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+  transition: all 0.5s;
+}
+
 .index-main{
   display: block;
   width: 100%;
@@ -126,10 +138,100 @@ a:active {
 
 .advantage {
   display: flex;
+  justify-content: flex-start;
+  align-items: center;
   padding-left: 35px;
-  margin-bottom: 100px;
+  margin-bottom: 50px;
+  justify-content: space-around;
 }
 
-.advantage-info {
+.advantage dl {
+  width: 260px;
+  margin-right: 54px;
   display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+.advantage dl dt {
+  margin-bottom: 15px;
+}
+
+.advantage dl dd {
+  text-align: left;
+}
+
+.cource {
+  width: 400px;
+  margin-bottom: 100px;
+  width: auto;
+  height: auto;
+}
+
+.cource ul {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.cource ul li {
+  width: 400px;
+  margin-right: 35px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 0.5s;
+}
+
+.cource ul li img {
+  width: 400px;
+  height: 266px;
+  display: block;
+  border-radius: 10px 10px 0 0;
+}
+
+.cource ul li div {
+  padding: 17px 32px 8px;
+  border-left: 1px solid #e4e8ea;
+  border-right: 1px solid #e4e8ea;
+  border-bottom: 1px solid #e4e8ea;
+  border-radius: 0 0 10px 10px;
+  height: 120px;
+  text-align: left;
+}
+
+.cource ul li h4 {
+  font-size: 18px;
+  font-family: PingFangSC-Semibold, PingFang SC;
+  font-weight: 600;
+  color: #1d202b;
+  line-height: 25px;
+  letter-spacing: 1px;
+}
+
+.cource ul li:hover {
+  transform: translateY(-10px);
+  box-shadow: -5px 5px 10px rgb(93 101 110 / 39%);
+}
+
+.cource ul li p {
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #9b9b9b;
+  line-height: 20px;
+}
+
+.buttonInfo {
+  width: 100%;
+  background: #e6effa;
+  font-size: 16px;
+  color: #2a4560;
+  text-align: center;
+  line-height: 60px;
+  height: 60px;
+}
+
+.buttonInfo span {
+  line-height: 10px;
 }

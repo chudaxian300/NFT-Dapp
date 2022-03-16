@@ -1,5 +1,6 @@
 import '../styles/app.css'
 import '../styles/global.css'
+import CompnyInfo from './compnyInfo.js'
 import Link from 'next/link'
 import Head from 'next/head'
 
@@ -49,6 +50,7 @@ function MarketPlace({ Component, pageProps }) {
         </div>
       </nav>
       <Component {...pageProps} />
+      <CompnyInfo />
     </div>
   )
 }
