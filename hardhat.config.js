@@ -17,8 +17,8 @@ module.exports = {
   networks: {
     hardhat: {
     },
-    mumbai:{
-      url: `https://mainnet.infura.io/v3/${projectId}`,
+    ganache:{
+      url: `https:localhost:7545`,
       accounts:[keyData]
     },
     mainnet:{

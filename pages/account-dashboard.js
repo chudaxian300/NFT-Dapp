@@ -47,27 +47,56 @@ export default function AccountDashBoard() {
     }
 
     if (loadingState === 'loaded' && !nfts.length) return (
-        <h1 className='px-20 py-7 text-4x1'>你没有铸造任何NFT</h1>
+        <main className="flex-shrink-0">
+            <div className="container">
+                <h1 className="mt-5">你没有铸造任何NFT</h1>
+                <p className="lead">赶紧去铸造NFT吧</p>
+                <p>点击前往 <a href="/mint-item">铸造页面</a> 或前往 <a href="/">主页</a></p>
+            </div>
+        </main>
     )
 
     return (
-        <div className='flex justify-center p-4'>
-            <h1 style={{ fontSize: '20px', color: 'purple' }}>已铸造的NFT</h1>
-            <div className='px-4' style={{ maxWidth: '1600px' }}>
-                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4'>
+        <div>
+            <div className='container mt-3'>
+                <button className="btn btn-lg btn-outline-primary border-0 iconfont" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                    &#xe64f; 筛选
+                </button>
+            </div>
+            <div className="offcanvas offcanvas-start" tabIndex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                <div className="offcanvas-header">
+                    <h5 className="offcanvas-title" id="offcanvasExampleLabel">筛选NFT</h5>
+                    <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div className="offcanvas-body">
+                    <div>
+                        Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+                    </div>
+                    <div className="dropdown mt-3">
+                        <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown">
+                            Dropdown button
+                        </button>
+                        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a className="dropdown-item" href="#">Action</a></li>
+                            <li><a className="dropdown-item" href="#">Another action</a></li>
+                            <li><a className="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div className='container mt-2'>
+                <div className='row g-4 row-cols-md-4 row-cols-lg-4 row-cols-xl-4'>
                     {
                         // 循环现有nft并在页面展示
                         nfts.map((nft, i) => (
-                            <div key={i} className='border shadow rounded-x1 overflow-hidden'>
-                                <img src={nft.image} />
-                                <div className='p-4'>
-                                    <p style={{ height: '64px' }} className='text-3x1 font-semibold'>{nft.name}</p>
-                                    <div style={{ height: '72px', overflow: 'hidden' }}>
-                                        <p className='text-gray-400'>{nft.description}</p>
+                            <div className='col-md'>
+                                <div key={i} className="card h-100">
+                                    <img src={nft.image} className="card-img-top" alt="..." />
+                                    <div className="card-body">
+                                        <h5 className="card-title mb-2">{nft.name}</h5>
+                                        <p className="card-text mb-1">{nft.description}</p>
+                                        <p className="card-text mb-3 iconfont">&#xe67b; {nft.price} ETH</p>
                                     </div>
-                                </div>
-                                <div className='p-4 bg-black'>
-                                    <p className='text-3x-1 mb-4 font-bold text-white'>{nft.price} ETH</p>
                                 </div>
                             </div>
                         ))

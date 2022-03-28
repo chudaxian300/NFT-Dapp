@@ -13,6 +13,7 @@ const client = ipfsHttpClient('http://127.0.0.1:5001/api/v0')
 //const client = ipfsHttpClient('http://127.0.0.1/tcp/8080')
 
 export default function MintItem() {
+    const [file, setFile] = useState(null)
     const [fileUrl, setFileUrl] = useState(null)
     const [formInput, setFormInput] = useState({
         price: '',
@@ -22,8 +23,15 @@ export default function MintItem() {
     const router = useRouter()
 
     // nft图片处理
-    async function onChange(e) {
-        const file = e.target.files[0]
+    async function getImg(e){
+        const newFile = e.target.files[0]
+        setFile(newFile)
+    }
+
+    async function uploadImg(e) {
+        // console.log(document.getElementById('inputGroupFile04'))
+        // const file = e.target.files[0]
+        
         try {
             //往ipfs里添加元素
             console.log(client)
@@ -44,7 +52,8 @@ export default function MintItem() {
     }
 
     // nft其他信息处理
-    async function createItemInfo() {
+    async function createItemInfo(e) {
+        e.preventDefault();
         const { name, description, price } = formInput
         if (!name || !description || !price || !fileUrl) return
         const data = JSON.stringify({
@@ -87,41 +96,78 @@ export default function MintItem() {
             value: listingPrice
         })
         await transaction.wait()
-        router.push('/')
+        router.push('/market')
     }
 
     return (
-        <div className='flex justify-center'>
-            <div className='w-1/2 flex flex-col pb-12'>
-                <input
-                    placeholder='输入名称'
-                    className='mt-8 border rounded p-4'
-                    onChange={e => setFormInput({ ...formInput, name: e.target.value })}
-                />
-                <textarea
-                    placeholder='输入描述'
-                    className='mt-2 border rounded p-4'
-                    onChange={e => setFormInput({ ...formInput, description: e.target.value })}
-                />
-                <input
-                    placeholder='输入价格(单位:ETH)'
-                    className='mt-2 border rounded p-4'
-                    onChange={e => setFormInput({ ...formInput, price: e.target.value })}
-                />
-                <input
-                    type='file'
-                    name='Asset'
-                    className='mt-4'
-                    onChange={onChange}
-                /> {
-                    fileUrl && (
-                        <img className='rounded mt-4' width='350px' src={fileUrl} />
-                    )}
-                <button onClick={createItemInfo}
-                    className='font-bold mt-4 bg-blue-500 text-white rounded p-4 shadow-lg'
-                >
-                    铸造 NFT
-                </button>
+        <div className="container">
+            <div className="row justify-content-center">
+                <div className="col-6 my-5">
+                    <form>
+                        <div className="mb-3">
+                            <label for="exampleInputName1" className="form-label">NFT名称</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="exampleInputName1"
+                                aria-describedby="nameHelp"
+                                onChange={e => setFormInput({ ...formInput, name: e.target.value })}
+                            />
+                            <div id="nameHelp" className="form-text">请慎重填写名称</div>
+                        </div>
+
+                        <div className="mb-3">
+                            <label for="exampleInputDescription1" className="form-label">NFT描述</label>
+                            <textarea
+                                type="text"
+                                className="form-control"
+                                id="exampleInputDescription1"
+                                aria-describedby="nameHelp"
+                                onChange={e => setFormInput({ ...formInput, description: e.target.value })}
+                            />
+                        </div>
+
+                        <label for="exampleInputPrice1" className="form-label">NFT价格</label>
+                        <div className="input-group">
+                            <input
+                                type="text"
+                                className="form-control"
+                                aria-label="Recipient's username"
+                                aria-describedby="basic-addon1 basic-addon2"
+                                onChange={e => setFormInput({ ...formInput, price: e.target.value })}
+                            />
+                            <span className="input-group-text" id="basic-addon1">ETH</span>
+                        </div>
+                        <div id='basic-addon2' className="form-text mb-3">价格不可小于手续费: 0.045 ETH</div>
+
+                        <label for="exampleInputPrice1" className="form-label">NFT图片</label>
+                        <div className="input-group mb-3">
+                            <input
+                                type="file"
+                                name='Asset'
+                                className="form-control"
+                                id="inputGroupFile04"
+                                aria-describedby="inputGroupFileAddon04"
+                                aria-label="Upload"
+                                onChange={getImg}
+                            />
+                            <button
+                                className="btn btn-outline-secondary"
+                                type="button"
+                                id="inputGroupFileAddon04"
+                                onClick={uploadImg}
+                            >上传</button>
+                        </div>
+                        {
+                            fileUrl && (
+                                <img className='rounded img-fluid mb-3'  src={fileUrl} />
+                            )}
+                        <button
+                             className="btn btn-primary btn-lg w-100 mt-5"
+                             onClick={createItemInfo}
+                        >铸造NFT</button>
+                    </form>
+                </div>
             </div>
         </div>
     )
