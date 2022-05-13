@@ -1,92 +1,46 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NFT交易所项目源码
 
-## Getting Started
+## 项目介绍
+本项目主要功能为基于ERC721非同质化代币交易,
+用户可自行铸造NFT, 或前往市场购买NFT, 满足用户NFT收藏需求
+该项目为用户出售NFT提供了两种方案, 分别为直接出售和进行拍卖
+购买者也可以前往市场或拍卖场参与NFT市场行为
 
-First, run the development server:
-
-可能需要重新部署合约
-
-```bash
-npx hardhat node
-npx hardhat run scripts/deploy.js --network localhost
-
-npm run dev
-# or
-yarn dev
-
-npx create-next-app (name)
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-部分依赖包解释
-
-```shell
-npm i 
-	ethers 
-	hardhat                         # 编译部署合约，类似truffle
-	@nomiclabs/hardhat-waffle       # waffle插件
-	ethereum-waffle 				# waffle框架
-	chai                            # 断言库
-	@nomiclabs/hardhat-ethers 		# waffle插件	
-	web3modal 
-	@openzeppelin/contracts 
-	ipfs-http-client 
-	axios
-	
-	
-npm i add -D 
-	tailwindcss@latest 
-	postcss@latest 
-	autoprefixer@latest
-	
-npx tailwindcss init -p 			# 创建tailwindcss配置文件
-```
+## 项目亮点
+* 前端采用next.js框架, 利用ethers实现前端与区块链交互
+* 使用IPFS存储NFT信息, 与区块链结合加强NFT安全性
+* 使用bootstrap, 纯手工编写页面
+* 合约编写与迁移工作使用hardhat框架实现
+* 基于ERC721的交易与同时多个拍卖支持
 
 
+## 源码组织
+由于本项目开发过程中始终实践***开发->重构->再开发***的敏捷模式，因此代码随项目进度变动较大。为了方便项目开发，本项目的源码将采用git branch的形式进行组织，同步源码进度。分支列表如下：
 
-### Hardhat
+* **main** 主分支，本branch不要求严格与视频对应。bug fix也将在master分支中进行。
+  * bug fix是否在其他分支体现将视情况而定。
+* **Ipfs-and-other** 实现IPFS功能和其他细节优化。
+* **front-optimize** 前端页面使用bootstrap完全重构与设计。
+* **resell **添加转卖功能
+* **auction-and-mint-separation** 较大更新, 添加拍卖功能, 并把铸造和出售两个功能分离, 以此提高用户体验
 
-```shell
-npx hardhat							# 初始化waffle框架
-```
+为防止过多的branch，根据代码覆盖范围，重构力度来考虑branch。并非每个功能都对应一个branch。
+
+## 如何使用
+1. `git clone https://github.com/chudaxian300/NFT-Dapp.git`
+1. `cd NFT-Dapp-main` 进入项目目录。
+1. 此时我们会在main branch里。
+1. 一般情况下，并不需要拉取其他branch的内容。
+1. 如果需要下载特定功能对应的代码到本地运行。
+`git checkout <branch> `即可。
+
+## 如何编译以及运行小程序
+1. `cd NFT-Dapp-main `进入项目目录
+1. 开启第一个终端输入:`npm install`, 再输入: `npm run dev`
+1. 开启第二个终端输入: `npx hardhat node`
+1. 开启第二个终端输入: `npx hardhat run scripts/deploy.js --network localhost`
+
+## 产品体验
 
 
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-# Basic Sample Hardhat Project
-
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat run scripts/deploy.js --network localhost
-npx hardhat help
-```
+http://localhost:3000/
