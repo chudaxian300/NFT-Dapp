@@ -5,7 +5,7 @@ import Web3Modal from 'web3modal'
 import { nftMarketAddress, nftAddress } from '../config'
 
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
-import KBMarket from '../artifacts/contracts/KBMarket.sol/KBMarket.json'
+import NFTMarket from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
 
 export default function AccountDashBoard() {
     const [nfts, setNFts] = useState([])
@@ -22,7 +22,7 @@ export default function AccountDashBoard() {
         const provider = new ethers.providers.Web3Provider(connect)
         const singer = provider.getSigner()
         const NFTContract = new ethers.Contract(nftAddress, NFT.abi, provider)
-        const MarketContract = new ethers.Contract(nftMarketAddress, KBMarket.abi, singer)
+        const MarketContract = new ethers.Contract(nftMarketAddress, NFTMarket.abi, singer)
         const data = await MarketContract.getMySellingToken()
 
         let items = await Promise.all(data.map(async i => {
@@ -55,6 +55,15 @@ export default function AccountDashBoard() {
             </div>
         </main>
     )
+    if (loadingState !== 'loaded') return (
+        <main>
+          <div className='container row-cols-1 mt-5 mb-5'>
+            <div className='col'>
+              <div className="sp sp-hydrogen"></div>
+            </div>
+          </div>
+        </main>
+      )
 
     return (
         <div>

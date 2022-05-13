@@ -109,3 +109,16 @@ a:active {
   transform: translateY(-10px);
   box-shadow: -5px 5px 10px rgb(93 101 110 / 39%);
 }
+
+.marketItems:hover {
+  box-shadow: 0 .125rem .25rem rgba(93 101 110 / 39%);;
+}
+
+.tokenImg {
+  width: 10%;
+}
+
+.highestBidder {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

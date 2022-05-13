@@ -1,6 +1,7 @@
 import '../styles/app.css'
 import '../styles/iconfont/iconfont.css'
 import 'bootstrap/dist/css/bootstrap.css'
+import '../styles/loadingStyle.css'
 import CompnyInfo from './compnyInfo.js'
 import Link from 'next/link'
 import Head from 'next/head'
@@ -21,7 +22,7 @@ function MarketPlace({ Component, pageProps }) {
             <h1>
               <a className="navbar-brand" href="#">
                 <img src="icon.png" alt="" width="40" height="40" className="d-inline-block align-text-center" />
-                <span className="d-inline-block ms-2">Bootstrap</span>
+                <span className="d-inline-block ms-2">Exchange</span>
               </a>
             </h1>
           </Link>
@@ -52,7 +53,7 @@ function MarketPlace({ Component, pageProps }) {
               </li>
               <li className="nav-item">
                 <Link href='/market'>
-                  <a className="nav-link active" aria-current="page" href="#">交易所</a>
+                  <a className="nav-link active" aria-current="page" href="#">市场</a>
                 </Link>
               </li>
               <li className="nav-item">
@@ -60,7 +61,6 @@ function MarketPlace({ Component, pageProps }) {
                   <a className="nav-link active">铸造NFT</a>
                 </Link>
               </li>
-
             </ul>
           </div>
         </div>

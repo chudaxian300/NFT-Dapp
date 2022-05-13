@@ -5,7 +5,7 @@ import Web3Modal from 'web3modal'
 import { nftMarketAddress, nftAddress } from '../config'
 
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
-import KBMarket from '../artifacts/contracts/KBMarket.sol/KBMarket.json'
+import NFTMarket from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
 import { useRouter } from 'next/router'
 
 // 使用ipfs托管nft里存储的数据
@@ -16,14 +16,13 @@ export default function MintItem() {
     const [file, setFile] = useState(null)
     const [fileUrl, setFileUrl] = useState(null)
     const [formInput, setFormInput] = useState({
-        price: '',
         name: '',
         description: ''
     })
     const router = useRouter()
-
+    console.log(router.query)
     // nft图片处理
-    async function getImg(e){
+    async function getImg(e) {
         const newFile = e.target.files[0]
         setFile(newFile)
     }
@@ -31,7 +30,7 @@ export default function MintItem() {
     async function uploadImg(e) {
         // console.log(document.getElementById('inputGroupFile04'))
         // const file = e.target.files[0]
-        
+
         try {
             //往ipfs里添加元素
             console.log(client)
@@ -55,7 +54,7 @@ export default function MintItem() {
     async function createItemInfo(e) {
         e.preventDefault();
         const { name, description, price } = formInput
-        if (!name || !description || !price || !fileUrl) return
+        if (!name || !description || !fileUrl) return
         const data = JSON.stringify({
             name,
             description,
@@ -71,7 +70,7 @@ export default function MintItem() {
         }
     }
 
-    // 上架物品
+    // 铸造物品
     async function createItem(url) {
         const web3Modal = new Web3Modal()
         const connect = await web3Modal.connect()
@@ -85,18 +84,13 @@ export default function MintItem() {
         let event = tx.events[0]
         let value = event.args[2]
         let tokenId = value.toNumber()
-        const price = ethers.utils.parseUnits(formInput.price, 'ether')
 
-        // 上架
-        contract = new ethers.Contract(nftMarketAddress, KBMarket.abi, signer)
-        let listingPrice = await contract.listingPrice()
-        listingPrice = listingPrice.toString()
+        contract = new ethers.Contract(nftMarketAddress, NFTMarket.abi, signer)
 
-        transaction = await contract.makeMarketItem(tokenId, price, nftAddress, {
-            value: listingPrice
-        })
+        transaction = await contract.addMarketItem(tokenId, nftAddress)
         await transaction.wait()
-        router.push('/market')
+
+        router.push('/my-nfts')
     }
 
     return (
@@ -105,7 +99,7 @@ export default function MintItem() {
                 <div className="col-6 my-5">
                     <form>
                         <div className="mb-3">
-                            <label for="exampleInputName1" className="form-label">NFT名称</label>
+                            <label htmlFor="exampleInputName1" className="form-label">NFT名称</label>
                             <input
                                 type="text"
                                 className="form-control"
@@ -117,7 +111,7 @@ export default function MintItem() {
                         </div>
 
                         <div className="mb-3">
-                            <label for="exampleInputDescription1" className="form-label">NFT描述</label>
+                            <label htmlFor="exampleInputDescription1" className="form-label">NFT描述</label>
                             <textarea
                                 type="text"
                                 className="form-control"
@@ -127,20 +121,7 @@ export default function MintItem() {
                             />
                         </div>
 
-                        <label for="exampleInputPrice1" className="form-label">NFT价格</label>
-                        <div className="input-group">
-                            <input
-                                type="text"
-                                className="form-control"
-                                aria-label="Recipient's username"
-                                aria-describedby="basic-addon1 basic-addon2"
-                                onChange={e => setFormInput({ ...formInput, price: e.target.value })}
-                            />
-                            <span className="input-group-text" id="basic-addon1">ETH</span>
-                        </div>
-                        <div id='basic-addon2' className="form-text mb-3">价格不可小于手续费: 0.045 ETH</div>
-
-                        <label for="exampleInputPrice1" className="form-label">NFT图片</label>
+                        <label htmlFor="exampleInputPrice1" className="form-label">NFT图片</label>
                         <div className="input-group mb-3">
                             <input
                                 type="file"
@@ -160,11 +141,11 @@ export default function MintItem() {
                         </div>
                         {
                             fileUrl && (
-                                <img className='rounded img-fluid mb-3'  src={fileUrl} />
+                                <img className='rounded img-fluid mb-3' src={fileUrl} />
                             )}
                         <button
-                             className="btn btn-primary btn-lg w-100 mt-5"
-                             onClick={createItemInfo}
+                            className="btn btn-primary btn-lg w-100 mt-5"
+                            onClick={createItemInfo}
                         >铸造NFT</button>
                     </form>
                 </div>

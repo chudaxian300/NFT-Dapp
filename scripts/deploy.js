@@ -2,7 +2,7 @@ const hre = require("hardhat");
 const fs = require("fs");
 
 async function main() {
-  const Market = await hre.ethers.getContractFactory("KBMarket");
+  const Market = await hre.ethers.getContractFactory("NFTMarket");
   const market = await Market.deploy();
 
   await market.deployed();
