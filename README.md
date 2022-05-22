@@ -33,7 +33,10 @@
 1. 一般情况下，并不需要拉取其他branch的内容。
 1. 如果需要下载特定功能对应的代码到本地运行。
 `git checkout <branch> `即可。
+<<<<<<< HEAD
 
+=======
+>>>>>>> 55ece9b0d814b895104a199140a47eb1d052269e
 ## 如何编译以及运行
 1. `cd NFT-Dapp-main `进入项目目录
 1. 开启第一个终端输入:`npm install`, 再输入: `npm run dev`
