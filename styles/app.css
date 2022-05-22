@@ -122,3 +122,12 @@ a:active {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.app_p{
+  display: inline-block;
+  width:200px;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  vertical-align: bottom;
+}
