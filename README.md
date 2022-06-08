@@ -17,7 +17,7 @@
 ## 源码组织
 由于本项目开发过程中始终实践***开发->重构->再开发***的敏捷模式，因此代码随项目进度变动较大。为了方便项目开发，本项目的源码将采用git branch的形式进行组织，同步源码进度。分支列表如下：
 
-* **main** 主分支，本branch不要求严格与视频对应。bug fix也将在master分支中进行。
+* **main** 主分支，本branch不要求严格。bug fix也将在master分支中进行。
   * bug fix是否在其他分支体现将视情况而定。
 * **Ipfs-and-other** 实现IPFS功能和其他细节优化。
 * **front-optimize** 前端页面使用bootstrap完全重构与设计。
@@ -43,7 +43,7 @@
 1. 开启第二个终端输入: `npx hardhat node`
 1. 开启第二个终端输入: `npx hardhat run scripts/deploy.js --network localhost`
 
-## 产品体验
+## 产品端口
 
 
 http://localhost:3000/

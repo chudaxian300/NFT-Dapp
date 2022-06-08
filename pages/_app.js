@@ -22,7 +22,7 @@ function MarketPlace({ Component, pageProps }) {
             <h1>
               <a className="navbar-brand" href="#">
                 <img src="icon.png" alt="" width="40" height="40" className="d-inline-block align-text-center" />
-                <span className="d-inline-block ms-2">Exchange</span>
+                <span className="d-inline-block ms-2">交易所</span>
               </a>
             </h1>
           </Link>

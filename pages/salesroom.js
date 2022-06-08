@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { nftMarketAddress, nftAddress } from '../config'
 import Web3Modal from 'web3modal'
+import Script from 'next/script'
 
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import NFTMarket from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
@@ -55,20 +56,28 @@ export default function Salesroom() {
     }
 
     async function bid(nft) {
+        console.log(nfts)
+        if (nft.endAt < Date.now() / 1000) {
+            alert('拍卖已结束不能出价')
+            return
+        }
         const web3Modal = new Web3Modal()
         const connect = await web3Modal.connect()
         const provider = new ethers.providers.Web3Provider(connect)
         // signer: 当前用户
         const signer = provider.getSigner()
+        const account = await signer.getAddress()
+        if (account === nft.seller) {
+            alert('自己不能出价')
+            return
+        }
         const MarketContract = new ethers.Contract(nftMarketAddress, NFTMarket.abi, signer)
         let newBid = ethers.utils.parseUnits(bidInput.bid, 'ether')
         console.log(newBid)
-        setLoadingState('not-loaded')
         const transaction = await MarketContract.auctionBid(nft.tokenId, {
             value: newBid
         })
         await transaction.wait()
-        setLoadingState('loaded')
         router.reload()
     }
 
@@ -97,7 +106,7 @@ export default function Salesroom() {
                     <div className='col col-12 text-center'>
                         <div className='row'>
                             <div className='col col-6 col-md-3 border-end border-bottom border-info'><p className='fw-bolder'>NFT编号</p># {nfts.tokenId}</div>
-                            <div className='col col-6 col-md-3 border-end border-bottom border-info pb-3'><p className='fw-bolder'>结束时间</p> {nfts.endAt}</div>
+                            <div className='col col-6 col-md-3 border-end border-bottom border-info pb-3'><p className='fw-bolder'>结束时间</p><span id='endTime'>{nfts.endAt}</span></div>
                             <div className='col col-6 col-md-3 border-end border-bottom border-info'><p className='fw-bolder'>当前价格</p>{nfts.highestBid} ETH</div>
                             <div className='col col-6 col-md-3 overflow-hidden highestBidder border-bottom border-info pb-3'><p className='fw-bolder'>当前最高出价人</p>{nfts.highestBidder}</div>
                         </div>
@@ -148,6 +157,7 @@ export default function Salesroom() {
                     </div>
                 </div>
             </div>
+            <Script src="/js/timeUtils.js" strategy="afterInteractive"/>
         </div>
     )
 }

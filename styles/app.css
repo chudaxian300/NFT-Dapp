@@ -125,7 +125,7 @@ a:active {
 
 .app_p{
   display: inline-block;
-  width:200px;
+  width:150px;
   overflow:hidden;
   white-space:nowrap;
   text-overflow:ellipsis;
