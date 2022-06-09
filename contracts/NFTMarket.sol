@@ -202,27 +202,27 @@ contract NFTMarket is ReentrancyGuard {
     }
 
     // 获取我正在售卖的商品
-    function getMySellToken() public view returns (MarketItem[] memory) {
-        uint256 itemCount = _tokenIds.current();
-        uint256 myCount = 0;
-        uint256 currentIndex = 0;
+     function getMySellToken() public view returns (MarketItem[] memory) {
+        uint256 itemCount = _tokenIds.current();
+        uint256 myCount = 0;
+        uint256 currentIndex = 0;
 
-        for (uint i = 0; i < itemCount; i++) {
-            if (idToTokenItem[i + 1].seller == msg.sender && !idToTokenItem[i + 1].isAuction && idToTokenItem[i + 1].enableSell) {
-                myCount++;
-            }
-        }
-        MarketItem[] memory items = new MarketItem[](myCount);
-        for (uint256 i = 0; i < itemCount; i++) {
-            if (idToTokenItem[i + 1].seller == msg.sender && !idToTokenItem[i + 1].isAuction && idToTokenItem[i + 1].enableSell) {
-                uint256 currentId = idToTokenItem[i + 1].itemId;
-                MarketItem storage currentItem = idToTokenItem[currentId];
-                items[currentIndex] = currentItem;
-                currentIndex++;
-            }
-        }
-        return items;
-    }
+        for (uint i = 0; i < itemCount; i++) {
+             if (idToTokenItem[i + 1].seller == msg.sender && !idToTokenItem[i + 1].isAuction && idToTokenItem[i + 1].enableSell) {
+                 myCount++;
+            }
+        }
+         MarketItem[] memory items = new MarketItem[](myCount);
+         for (uint256 i = 0; i < itemCount; i++) {
+             if (idToTokenItem[i + 1].seller == msg.sender && !idToTokenItem[i + 1].isAuction && idToTokenItem[i + 1].enableSell) {
+                 uint256 currentId = idToTokenItem[i + 1].itemId;
+                     MarketItem storage currentItem = idToTokenItem[currentId];
+                     items[currentIndex] = currentItem;
+                 currentIndex++;
+             }
+         }
+         return items;
+     }
 
     // 获取我铸造的nft
     function getMySellingToken() public view returns (MarketItem[] memory) {
