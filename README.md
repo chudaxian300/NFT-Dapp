@@ -38,8 +38,9 @@
 =======
 >>>>>>> 55ece9b0d814b895104a199140a47eb1d052269e
 ## 如何编译以及运行
+1. 啓動 ipfs , 點擊`ipfs.exe`啓動本地ipfs
 1. `cd NFT-Dapp-main `进入项目目录
-1. 开启第一个终端输入:`npm install`, 再输入: `npm run dev`
+1. 开启第一个终端输入:第一次啓動需要輸入`npm install`, 再输入: `npm run dev`
 1. 开启第二个终端输入: `npx hardhat node`
 1. 开启第二个终端输入: `npx hardhat run scripts/deploy.js --network localhost`
 
