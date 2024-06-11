@@ -122,3 +122,13 @@ a:active {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.indexCllo {
+  object-fit: cover;
+}
+
+.mainnav {
+  border-bottom: 1px solid;
+  border-color: rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+}

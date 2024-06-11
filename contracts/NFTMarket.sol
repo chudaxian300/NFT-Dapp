@@ -23,6 +23,11 @@ contract NFTMarket is ReentrancyGuard {
         owner = payable(msg.sender);
     }
 
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not the owner");
+        _;
+    }
+
     struct MarketItem {
         uint256 itemId;
         uint256 price;
@@ -124,13 +129,13 @@ contract NFTMarket is ReentrancyGuard {
     ) public {
         require(idToTokenItem[itemId].seller == msg.sender || owner == msg.sender, 'permission denied');
         uint256 tokenId = idToTokenItem[itemId].tokenId;
-        idToTokenItem[itemId].price = 0;
-        idToTokenItem[itemId].owner = payable(msg.sender);
+        IERC721(nftAddress).transferFrom(address(this), idToTokenItem[itemId].seller,  tokenId);
+        payable(idToTokenItem[itemId].seller).transfer(listingPrice);
+        idToTokenItem[itemId].owner = payable(idToTokenItem[itemId].seller);
         idToTokenItem[itemId].seller = payable(address(0));
         idToTokenItem[itemId].enableSell = false;
+        idToTokenItem[itemId].price = 0;
 
-        IERC721(nftAddress).transferFrom(address(this), msg.sender,  tokenId);
-        payable(msg.sender).transfer(listingPrice);
     }
 
     // 交易物品
@@ -208,13 +213,13 @@ contract NFTMarket is ReentrancyGuard {
         uint256 currentIndex = 0;
 
         for (uint i = 0; i < itemCount; i++) {
-            if (idToTokenItem[i + 1].seller == msg.sender && !idToTokenItem[i + 1].isAuction) {
+            if (idToTokenItem[i + 1].seller == msg.sender && !idToTokenItem[i + 1].isAuction && idToTokenItem[i + 1].enableSell) {
                 myCount++;
             }
         }
         MarketItem[] memory items = new MarketItem[](myCount);
         for (uint256 i = 0; i < itemCount; i++) {
-            if (idToTokenItem[i + 1].seller == msg.sender && !idToTokenItem[i + 1].isAuction) {
+            if (idToTokenItem[i + 1].seller == msg.sender && !idToTokenItem[i + 1].isAuction && idToTokenItem[i + 1].enableSell) {
                 uint256 currentId = idToTokenItem[i + 1].itemId;
                 MarketItem storage currentItem = idToTokenItem[currentId];
                 items[currentIndex] = currentItem;
@@ -250,6 +255,10 @@ contract NFTMarket is ReentrancyGuard {
     // 根据ID获取物品信息
     function getTokenDetail(uint itemId) public view returns (MarketItem memory) {
         return idToTokenItem[itemId];
+    }
+
+    function getOwner() public view returns (address) {
+        return owner;
     }
 
     // 拍卖部分=====================================================================================================
@@ -325,6 +334,22 @@ contract NFTMarket is ReentrancyGuard {
         delete idToAuctionItem[itemId];
         _auctionIds.decrement();
         emit End(idToAuctionItem[itemId].highestBidder, idToAuctionItem[itemId].highestBid);
+    }
+
+    // 拍卖强制结束
+    function auctionAdminEnd(uint itemId, address nftAddress) external onlyOwner nonReentrant{
+        if (idToAuctionItem[itemId].highestBidder != address(0)) {
+            idToAuctionItem[itemId].highestBidder.transfer(idToAuctionItem[itemId].highestBid);
+        }
+        IERC721(nftAddress).transferFrom(address(this), idToTokenItem[itemId].seller, idToTokenItem[itemId].tokenId); 
+        idToTokenItem[itemId].seller.transfer(listingPrice);
+        idToTokenItem[itemId].owner = payable(idToTokenItem[itemId].seller);
+        idToTokenItem[itemId].seller = payable(address(0));
+
+        idToAuctionItem[itemId].ended = true;
+        idToTokenItem[itemId].isAuction = false;
+        delete idToAuctionItem[itemId];
+        _auctionIds.decrement();
     }
 
     // 获取拍卖中的的nft

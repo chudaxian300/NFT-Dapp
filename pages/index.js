@@ -3,16 +3,33 @@ import Link from 'next/link'
 export default function Home() {
     return (
         <div>
-            <div className='container-fluid'>
+            <div className='container-fluid' style={{ height:'440px'}}>
                 <div className='row row-cols-1 '>
                     <div className='col p-0'>
-                        <div id="carouselExampleCaptions" className="carousel slide" data-bs-ride="carousel">
+                        <div id="carouselExampleInterval" className="carousel slide" data-bs-ride="carousel">
+                            <div className="carousel-inner">
+                                <div className="carousel-item active" style={{ height:'440px' }}>
+                                    <img src="main.png"
+                                        className="indexCllo d-block w-100 h-100" alt="..."></img>
+                                </div>
+                            </div>
+                            <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span className="visually-hidden">Previous</span>
+                            </button>
+                            <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                                <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span className="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                        {/* <div id="carouselExampleCaptions" className="carousel slide" data-bs-ride="carousel">
                             <div className="carousel-inner">
                                 <div className="carousel-item active">
-                                    <video className='d-block index-video' style={{ height: '900px' }} autoPlay loop muted>
+                                    <div className='index-title'>
+
+                                        <video className='d-block index-video' style={{ height: '900px' }} autoPlay loop muted>
                                         <source src={`/video/a.mp4`} type="video/mp4" />
                                     </video>
-                                    <div className='index-title'>
                                         <h1>NFT</h1>
                                         <h2>让价值自由流通</h2>
                                         <div>
@@ -30,7 +47,7 @@ export default function Home() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

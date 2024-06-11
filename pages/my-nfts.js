@@ -47,7 +47,7 @@ const UserOffcanva = () => {
 
 export default function MyNft() {
   const [nfts, setNFts] = useState([])
-  const [loadingState, setLoadingState] = useState('not-loaded')
+  const [loadingState, setLoadingState] = useState('loaded')
   const [curNft, setCurNft] = useState({})
   const [resellFormInput, setResellFormInput] = useState({
     price: '',
@@ -88,10 +88,25 @@ export default function MyNft() {
       return item
     }))
     setNFts(items)
-    setLoadingState('loaded')
+  }
+
+  // 浮点数判断方法
+  function compareFloats(num1, num2, epsilon = 0.0001) {
+    return num1 - num2 < epsilon;
   }
 
   async function sellMyNFT(nft, newPrice) {
+    const forms = document.querySelectorAll('.needs-validation')
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+      if (!form.checkValidity()) {
+        form.classList.add('was-validated')
+      }
+    })
+    if (!newPrice || isNaN(newPrice)) {
+      alert("价格必须为数字")
+      return
+    }
     const web3Modal = new Web3Modal()
     const connect = await web3Modal.connect()
     const provider = new ethers.providers.Web3Provider(connect)
@@ -101,9 +116,12 @@ export default function MyNft() {
     const MarketContract = new ethers.Contract(nftMarketAddress, NFTMarket.abi, signer)
 
     let listingPrice = await MarketContract.listingPrice()
-    listingPrice = listingPrice.toString()
     let price = ethers.utils.parseUnits(newPrice, 'ether')
-
+    if (price.lt(listingPrice)) {
+      alert("价格必须大于手续费")
+      return
+    }
+    listingPrice = listingPrice.toString()
     await NFTContract.setApprovalForAll(nftMarketAddress, true)
 
     setLoadingState('not-loaded')
@@ -116,6 +134,17 @@ export default function MyNft() {
   }
 
   async function auctionMyNft(nft, auctionPrice, time) {
+    const forms = document.querySelectorAll('.needs-validation')
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+      if (!form.checkValidity()) {
+        form.classList.add('was-validated')
+      }
+    })
+    if (!auctionPrice || !time || isNaN(auctionPrice) || isNaN(time)) {
+      alert("拍卖价格和拍卖时间必须为数字")
+      return
+    }
     const web3Modal = new Web3Modal()
     const connect = await web3Modal.connect()
     const provider = new ethers.providers.Web3Provider(connect)
@@ -125,9 +154,8 @@ export default function MyNft() {
     const MarketContract = new ethers.Contract(nftMarketAddress, NFTMarket.abi, signer)
 
     let listingPrice = await MarketContract.listingPrice()
-    listingPrice = listingPrice.toString()
     let price = ethers.utils.parseUnits(auctionPrice, 'ether')
-
+    listingPrice = listingPrice.toString()
     await NFTContract.setApprovalForAll(nftMarketAddress, true)
     console.log(nft)
     setLoadingState('not-loaded')
@@ -219,7 +247,7 @@ export default function MyNft() {
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
-              <form>
+              <form className="needs-validation" noValidate>
                 <div className="mb-3">
                   <label htmlFor="recipient-name" className="col-form-label">输入卖出价格(单位:ETH):</label>
                   <div className="input-group mb-3">
@@ -230,8 +258,12 @@ export default function MyNft() {
                       id="resell-price"
                       onChange={e => setResellFormInput({ ...resellFormInput, price: (e.target.value).toString() })}
                       aria-label="Amount (to the nearest dollar)"
+                      required
                     />
                     <span className="input-group-text">ETH</span>
+                    <div className="invalid-feedback">
+                      请输入售卖价格
+                    </div>
                   </div>
                   <div id='basic-addon2' className="form-text mb-3">价格不可小于上架手续费: 0.045 ETH</div>
                 </div>
@@ -257,7 +289,7 @@ export default function MyNft() {
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
-              <form>
+              <form className="needs-validation" noValidate>
                 <div className="mb-3">
                   <label htmlFor="recipient-name" className="col-form-label">起拍价格:</label>
                   <div className="input-group mb-3">
@@ -269,8 +301,12 @@ export default function MyNft() {
                       onChange={e => setAuctionFormInput({ ...auctionFormInput, price: (e.target.value).toString() })}
                       placeholder='0.001'
                       aria-label="Amount (to the nearest dollar)"
+                      required
                     />
                     <span className="input-group-text">ETH</span>
+                    <div className="invalid-feedback">
+                    请输入起拍价格
+                  </div>
                   </div>
                   <div id='basic-addon2' className="form-text mb-3">如不填, 则起拍价默认为从0.001开始</div>
                 </div>
@@ -281,7 +317,11 @@ export default function MyNft() {
                     className="form-control"
                     id="auction-startTime"
                     onChange={e => setAuctionFormInput({ ...auctionFormInput, startTime: e.target.value })}
+                    required
                   />
+                  <div className="invalid-feedback">
+                    请输入拍卖时间
+                  </div>
                 </div>
               </form>
             </div>

@@ -33,7 +33,7 @@ const UserOffcanva = () => {
             </Link>
           </div>
           <div>
-            <Link href='/mu-auction-nfts'>
+            <Link href='/my-auction-nfts'>
               <button type="button" className="dropdown-item btn-lg" data-bs-dismiss="offcanvas">我的拍卖</button>
             </Link>
           </div>
@@ -86,8 +86,14 @@ export default function MyAuctionNft() {
     const MarketContract = new ethers.Contract(nftMarketAddress, NFTMarket.abi, signer)
 
     setLoadingState('not-loaded')
-    const transaction = await MarketContract.auctionEnd(nft.tokenId, nftAddress)
-    await transaction.wait()
+    try {
+      const transaction = await MarketContract.auctionEnd(nft.tokenId, nftAddress)
+      await transaction.wait()
+    } catch (error) {
+      if (error.data.message === "Error: VM Exception while processing transaction: reverted with reason string 'auction not ended'") {
+        alert("无法结束拍卖，拍卖还没结束")
+      }
+    }
     setLoadingState('loaded')
     loadNFTs()
   }

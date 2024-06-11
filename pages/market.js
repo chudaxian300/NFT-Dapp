@@ -11,6 +11,7 @@ import NFTMarket from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
 
 export default function Market() {
   const [nfts, setNFts] = useState([])
+  const [admin, setAdmin] = useState(false)
   const [loadingState, setLoadingState] = useState('not-loaded')
 
   useEffect(() => {
@@ -54,11 +55,14 @@ export default function Market() {
   // 加载可购NFT
   async function loadNFTs() {
     const provider = new ethers.providers.JsonRpcProvider()
+    const MetaMaskProvider = new ethers.providers.Web3Provider(window.ethereum);
     const NFTContract = new ethers.Contract(nftAddress, NFT.abi, provider)
     const MarketContract = new ethers.Contract(nftMarketAddress, NFTMarket.abi, provider)
 
+    const owner = await MarketContract.getOwner()
+    const user = await MetaMaskProvider.getSigner().getAddress()
+    setAdmin(owner == user)
     let data = []
-
     if (router.query.pattern === 'auction') {
       data = await MarketContract.getTokenAtAuction()
     } else if (router.query) {
@@ -83,6 +87,22 @@ export default function Market() {
     }))
     setNFts(items)
     setLoadingState('loaded')
+  }
+
+  // 管理员下架NFT
+  async function removeToken(nft) {
+    const web3Modal = new Web3Modal()
+    const connect = await web3Modal.connect()
+    const provider = new ethers.providers.Web3Provider(connect)
+    // signer: 当前用户
+    const signer = provider.getSigner()
+    const MarketContract = new ethers.Contract(nftMarketAddress, NFTMarket.abi, signer)
+
+    setLoadingState('not-loaded')
+    const transaction = await MarketContract.removeMarketItem(nft.tokenId, nftAddress)
+    await transaction.wait()
+    setLoadingState('loaded')
+    loadNFTs()
   }
 
   // 购买方法
@@ -136,21 +156,30 @@ export default function Market() {
           {
             // 循环现有nft并在页面展示
             nfts.map((nft, i) => (
-                <div className='col-md  marketItems p-0'>
-                  <div key={i} className="card h-100 w-100">
+              <div className='col-md  marketItems p-0'>
+                <div key={i} className="card h-100 w-100">
+                  <Link href={`/itemDetails?tokenId=${nft.tokenId}`} passHref>
                     <img src={nft.image} className="card-img-top img-fluid center-block w-100 h-100" alt="..." />
-                    <div className="card-body">
-                      <h5 className="card-title mb-2">{nft.name}</h5>
-                      <p className="card-text mb-1">{nft.description}</p>
-                      <p className="card-text mb-3 iconfont">&#xe67b; {nft.price} ETH</p>
+                  </Link>
+                  <div className="card-body">
+                    <h5 className="card-title mb-2">{nft.name}</h5>
+                    <p className="card-text mb-1">{nft.description}</p>
+                    <p className="card-text mb-3 iconfont">&#xe67b; {nft.price} ETH</p>
+                    <a
+                      href="#"
+                      className="btn btn-primary w-100"
+                      onClick={() => buyNFT(nft)}
+                    >购买</a>
+                    {admin &&
                       <a
                         href="#"
-                        className="btn btn-primary w-100"
-                        onClick={() => buyNFT(nft)}
-                      >查看</a>
-                    </div>
+                        className="btn btn-danger w-100 mt-1"
+                        onClick={() => removeToken(nft)}
+                      >下架</a>
+                    }
                   </div>
                 </div>
+              </div>
             ))
           }
         </div>

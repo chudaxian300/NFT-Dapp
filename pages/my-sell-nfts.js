@@ -122,7 +122,6 @@ export default function MyAuctionNft() {
                     {
                         // 循环现有nft并在页面展示
                         nfts.map((nft, i) => (
-                            <Link href={`/salesroom?tokenId=${nft.tokenId}`}>
                                 <div className='col-md'>
                                     <div key={i} className="card h-100">
                                         <img src={nft.image} className="card-img-top" />
@@ -136,7 +135,6 @@ export default function MyAuctionNft() {
                                         </div>
                                     </div>
                                 </div>
-                            </Link>
                         ))
                     }
                 </div>

@@ -7,6 +7,7 @@ import { nftMarketAddress, nftAddress } from '../config'
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import NFTMarket from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
 import { useRouter } from 'next/router'
+import Script from 'next/script'
 
 // 使用ipfs托管nft里存储的数据
 const client = ipfsHttpClient('http://127.0.0.1:5001/api/v0')
@@ -20,7 +21,6 @@ export default function MintItem() {
         description: ''
     })
     const router = useRouter()
-    console.log(router.query)
     // nft图片处理
     async function getImg(e) {
         const newFile = e.target.files[0]
@@ -54,6 +54,13 @@ export default function MintItem() {
     async function createItemInfo(e) {
         e.preventDefault();
         const { name, description, price } = formInput
+        const forms = document.querySelectorAll('.needs-validation')
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            if (!form.checkValidity()) {
+               form.classList.add('was-validated') 
+            }
+        })
         if (!name || !description || !fileUrl) return
         const data = JSON.stringify({
             name,
@@ -97,16 +104,21 @@ export default function MintItem() {
         <div className="container">
             <div className="row justify-content-center">
                 <div className="col-6 my-5">
-                    <form>
+                    <form className="needs-validation" noValidate>
+
                         <div className="mb-3">
                             <label htmlFor="exampleInputName1" className="form-label">NFT名称</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="exampleInputName1"
-                                aria-describedby="nameHelp"
-                                onChange={e => setFormInput({ ...formInput, name: e.target.value })}
-                            />
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="exampleInputName1"
+                                    //aria-describedby="nameHelp"
+                                    onChange={e => setFormInput({ ...formInput, name: e.target.value })}
+                                    required
+                                />
+                                <div className="invalid-feedback">
+                                    请输入名称
+                                </div>
                             <div id="nameHelp" className="form-text">请慎重填写名称</div>
                         </div>
 
@@ -118,7 +130,11 @@ export default function MintItem() {
                                 id="exampleInputDescription1"
                                 aria-describedby="nameHelp"
                                 onChange={e => setFormInput({ ...formInput, description: e.target.value })}
+                                required
                             />
+                            <div className="invalid-feedback">
+                                    请输入描述
+                            </div>
                         </div>
 
                         <label htmlFor="exampleInputPrice1" className="form-label">NFT图片</label>
@@ -131,7 +147,11 @@ export default function MintItem() {
                                 aria-describedby="inputGroupFileAddon04"
                                 aria-label="Upload"
                                 onChange={getImg}
+                                required
                             />
+                            <div className="invalid-feedback">
+                                    请上传图片
+                            </div>
                             <button
                                 className="btn btn-outline-secondary"
                                 type="button"
@@ -144,6 +164,7 @@ export default function MintItem() {
                                 <img className='rounded img-fluid mb-3' src={fileUrl} />
                             )}
                         <button
+                            type="submit"
                             className="btn btn-primary btn-lg w-100 mt-5"
                             onClick={createItemInfo}
                         >铸造NFT</button>

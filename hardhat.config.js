@@ -18,7 +18,7 @@ module.exports = {
     hardhat: {
     },
     ganache:{
-      url: `https:localhost:7545`,
+      url: `https:localhost:8545`,
       accounts:[keyData]
     },
     mainnet:{
