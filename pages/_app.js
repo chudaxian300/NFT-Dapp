@@ -40,7 +40,11 @@ function MarketPlace({ Component, pageProps }) {
             <h1>
               <a className="navbar-brand" href="#">
                 <img src="icon.png" alt="" width="40" height="40" className="d-inline-block align-text-center" />
+<<<<<<< HEAD
                 <span className="d-inline-block ms-2">NFT市场{ admin && ' (管理员)'}</span>
+=======
+                <span className="d-inline-block ms-2">交易所</span>
+>>>>>>> 739291245fcd1ec4276e6fa39217ad82da77a7f2
               </a>
             </h1>
           </Link>

@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import NFTMarket from '../artifacts/contracts/NFTMarket.sol/NFTMarket.json'
+import { create } from 'ipfs-http-client'
 
 const UserOffcanva = () => {
   return (
@@ -83,7 +84,8 @@ export default function MyNft() {
         owner: i.owner,
         image: meta.data.image,
         name: meta.data.name,
-        description: meta.data.description
+        description: meta.data.description,
+        creater: i.creater,
       }
       return item
     }))
@@ -203,6 +205,8 @@ export default function MyNft() {
                   <img src={nft.image} className="card-img-top" />
                   <div className="card-body">
                     <h5 className="card-title mb-2">{nft.name}</h5>
+                    <p className="app_p">铸造者:&nbsp;&nbsp;{nft.creater}</p>
+                    <p className="app_p">售卖者:&nbsp;&nbsp;{nft.seller}</p>
                     <p className="card-text mb-1">{nft.description}</p>
                     <a
                       className="btn btn-primary w-100"
@@ -299,7 +303,7 @@ export default function MyNft() {
                       className="form-control"
                       id="auction-price"
                       onChange={e => setAuctionFormInput({ ...auctionFormInput, price: (e.target.value).toString() })}
-                      placeholder='0.001'
+                      placeholder='0.045'
                       aria-label="Amount (to the nearest dollar)"
                       required
                     />
@@ -308,7 +312,7 @@ export default function MyNft() {
                     请输入起拍价格
                   </div>
                   </div>
-                  <div id='basic-addon2' className="form-text mb-3">如不填, 则起拍价默认为从0.001开始</div>
+                  <div id='basic-addon2' className="form-text mb-3">如不填, 则起拍价默认为从0.045开始</div>
                 </div>
                 <div className="mb-3">
                   <label htmlFor="message-text" className="col-form-label">拍卖时间:</label>

@@ -123,6 +123,7 @@ a:active {
   text-overflow: ellipsis;
 }
 
+<<<<<<< HEAD
 .indexCllo {
   object-fit: cover;
 }
@@ -131,4 +132,13 @@ a:active {
   border-bottom: 1px solid;
   border-color: rgba(0, 0, 0, 0.1);
   padding: 1rem;
+=======
+.app_p{
+  display: inline-block;
+  width:150px;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  vertical-align: bottom;
+>>>>>>> 739291245fcd1ec4276e6fa39217ad82da77a7f2
 }

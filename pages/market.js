@@ -81,6 +81,7 @@ export default function Market() {
         owner: i.owner,
         image: meta.data.image,
         name: meta.data.name,
+        creater: i.creater,
         description: meta.data.description
       }
       return item
@@ -160,6 +161,7 @@ export default function Market() {
                 <div key={i} className="card h-100 w-100">
                   <Link href={`/itemDetails?tokenId=${nft.tokenId}`} passHref>
                     <img src={nft.image} className="card-img-top img-fluid center-block w-100 h-100" alt="..." />
+<<<<<<< HEAD
                   </Link>
                   <div className="card-body">
                     <h5 className="card-title mb-2">{nft.name}</h5>
@@ -177,6 +179,20 @@ export default function Market() {
                         onClick={() => removeToken(nft)}
                       >下架</a>
                     }
+=======
+                    <div className="card-body">
+                      <h5 className="card-title mb-2">{nft.name}</h5>
+                      <p className="app_p mb-1">铸造者:&nbsp;&nbsp;{nft.creater}</p>
+                    <p className="app_p mb-1">售卖者:&nbsp;&nbsp;{nft.seller}</p>
+                      <p className="card-text mb-1">{nft.description}</p>
+                      <p className="card-text mb-3 iconfont">&#xe67b; {nft.price} ETH</p>
+                      <a
+                        href="#"
+                        className="btn btn-primary w-100"
+                        onClick={() => buyNFT(nft)}
+                      >购买</a>
+                    </div>
+>>>>>>> 739291245fcd1ec4276e6fa39217ad82da77a7f2
                   </div>
                 </div>
               </div>
