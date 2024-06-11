@@ -56,7 +56,6 @@ export default function Salesroom() {
     }
 
     async function bid(nft) {
-<<<<<<< HEAD
         const forms = document.querySelectorAll('.needs-validation')
         // Loop over them and prevent submission
         Array.from(forms).forEach(form => {
@@ -69,9 +68,6 @@ export default function Salesroom() {
             alert("出价金额必须为数字")
             return
         }
-=======
-        console.log(nfts)
->>>>>>> 739291245fcd1ec4276e6fa39217ad82da77a7f2
         if (nft.endAt < Date.now() / 1000) {
             alert('拍卖已结束不能出价')
             return
@@ -88,7 +84,6 @@ export default function Salesroom() {
         }
         const MarketContract = new ethers.Contract(nftMarketAddress, NFTMarket.abi, signer)
         let newBid = ethers.utils.parseUnits(bidInput.bid, 'ether')
-<<<<<<< HEAD
 
         try {
             const transaction = await MarketContract.auctionBid(nft.tokenId, {
@@ -102,14 +97,6 @@ export default function Salesroom() {
         }
 
 
-=======
-        console.log(newBid)
-        const transaction = await MarketContract.auctionBid(nft.tokenId, {
-            value: newBid
-        })
-        await transaction.wait()
-        router.reload()
->>>>>>> 739291245fcd1ec4276e6fa39217ad82da77a7f2
     }
 
     if (loadingState !== 'loaded') return (
@@ -192,11 +179,7 @@ export default function Salesroom() {
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
             <Script src="/js/timeUtils.js" strategy="afterInteractive" />
-=======
-            <Script src="/js/timeUtils.js" strategy="afterInteractive"/>
->>>>>>> 739291245fcd1ec4276e6fa39217ad82da77a7f2
         </div>
     )
 }
